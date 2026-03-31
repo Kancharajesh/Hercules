@@ -22,6 +22,8 @@ test("Verify Research menu is visible and clickable", async ({ page }) => {
   await home.research_visible();
 });
 
+
+
 test("Click Research menu and verify Research content", async ({ page }) => {
   const home = new HomePage(page);
   await home.research_click();
