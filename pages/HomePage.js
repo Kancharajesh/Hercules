@@ -11,6 +11,8 @@ export class HomePage {
     this.aboutUs = page.locator("//li[normalize-space()='About Us']");
     this.superJ = page.locator("//li[normalize-space()='Super J']");
 
+    
+
     // ---------- Page Content Locators ----------
     this.researchContent = page.locator(
       "xpath=(//div[contains(@class,'md:max-w') and contains(@class,'mx-auto')])[1]"
