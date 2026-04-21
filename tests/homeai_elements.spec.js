@@ -116,6 +116,8 @@ test.only("Verify AI prompt submission", async ({ page }) => {
   await homeai.verifyChatSuggestion();
 });
 
+
+
 // ✅ AI Test 2 (Print response)
 test.only("Verify AI prompt and print response", async ({ page }) => {
   const homeai = new Homeai(page);
