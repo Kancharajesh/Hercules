@@ -13,6 +13,7 @@ export class HomePage {
 
     
 
+
     // ---------- Page Content Locators ----------
     this.researchContent = page.locator(
       "xpath=(//div[contains(@class,'md:max-w') and contains(@class,'mx-auto')])[1]"

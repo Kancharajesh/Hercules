@@ -129,7 +129,7 @@ export class Homeai {
     await this.verifyAllSurveyCardsSection();
   }
 
-  // ✅ AI prompt methods
+  //  AI prompt methods
   async enterPrompt(text) {
     await expect(this.ai_prompt_input_field).toBeVisible({ timeout: 15000 });
     await this.ai_prompt_input_field.fill(text);

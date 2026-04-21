@@ -105,7 +105,7 @@ test("TC03 - View All → Research Templates list", async ({ page }) => {
 });
 
 // ✅ AI Test 1
-test("Verify AI prompt submission", async ({ page }) => {
+test.only("Verify AI prompt submission", async ({ page }) => {
   const homeai = new Homeai(page);
 
   const prompt = generatePrompt();
@@ -117,7 +117,7 @@ test("Verify AI prompt submission", async ({ page }) => {
 });
 
 // ✅ AI Test 2 (Print response)
-test("Verify AI prompt and print response", async ({ page }) => {
+test.only("Verify AI prompt and print response", async ({ page }) => {
   const homeai = new Homeai(page);
 
   const prompt = generatePrompt();
