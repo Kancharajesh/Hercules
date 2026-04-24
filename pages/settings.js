@@ -1,95 +1,156 @@
-import { test, expect } from "@playwright/test";
-import { Login_model } from "../pages/Login_model.js";
-import { Settings } from "../pages/settings.js";
+import { expect } from "@playwright/test";
 
-test.beforeEach(async ({ page }) => {
-  const login = new Login_model(page);
+export class Settings {
+  constructor(page) {
+    this.page = page;
 
-  await login.launchTheBrowser();
-  await login.openLoginForm();
-  await login.login("rajesh@jupitermeta.io", "12345678");
+    // Profile / menu
+    this.setting_profile = page.locator("(//img[@alt='nav-profile'])[1]");
+    this.profile_popup = page.locator("//div[@class='pt-4 w-full']");
 
-  await page.waitForLoadState("domcontentloaded");
-});
+    // Popup menu items
+    this.get_free_credits = page.getByText("Get Free Credits");
+    this.settings_button = page.getByText("Settings");
+    this.help_button = page.getByText("Help");
+    this.dashboard_button = page.getByText("Dashboard");
+    this.logout_button = page.getByText("Logout");
 
-test("Verify profile menu opens", async ({ page }) => {
-  const settings = new Settings(page);
+    // Credits popup
+    this.get_free_credits_popup = page.locator("//div[@role='dialog']");
+    this.get_free_credits_popup_close = page.locator("//img[@alt='close-modal']");
 
-  await settings.openProfileMenu();
-  await settings.verifyProfilePopup();
-});
+    // Settings tabs
+    this.settings_general = page.getByRole("button", { name: "General" });
+    this.settings_account = page.getByRole("button", { name: "Account" });
+    this.settings_billing = page.getByRole("button", { name: "Billing" });
 
-test("Verify profile credits are visible", async ({ page }) => {
-  const settings = new Settings(page);
+    // Settings screen sections
+    this.settings_general_screen_view = page.locator(
+      "//div[contains(@class,'flex flex-col gap-8')]"
+    );
 
-  await settings.openProfileMenu();
-  await settings.verifyProfileCredits();
-});
+    this.settings_account_screen_view = page.locator(
+      "//main//div[contains(@class,'div') or contains(@class,'w-full')]"
+    );
 
-test("Verify Get Free Credits popup opens", async ({ page }) => {
-  const settings = new Settings(page);
+    this.settings_billing_screen_view_transactions = page.locator(
+      "body > div:nth-child(3) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > main:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(3) > div:nth-child(1) > div:nth-child(1)"
+    );
 
-  await settings.openProfileMenu();
-  await settings.openFreeCredits();
-});
+    // Help
+    this.help_fullscreen = page.locator(
+      "div[class='md:pl-24 md:pr-[46px] h-full box-border w-full']"
+    );
+    this.help_buttons = page.locator("//div[contains(@class,'flex flex-wrap gap-4')]");
 
-test("Verify Get Free Credits popup closes", async ({ page }) => {
-  const settings = new Settings(page);
+    // Logout popup
+    this.logout_popup = page.locator("//div[@role='dialog']");
+    this.logout_cancel = page.getByRole("button", { name: "Cancel" });
+    this.logout_confirm = page.getByRole("button", { name: "Logout" });
 
-  await settings.openProfileMenu();
-  await settings.openFreeCredits();
-  await settings.closeFreeCreditsPopup();
-});
+    // Credits row in profile popup
+    this.profile_credits = page.locator(
+      "(//div[@class='flex justify-between w-full border-b border-b-[#E6E4E9] pt-[10px] pb-2'])[1]"
+    );
+  }
 
-test("Verify General settings page", async ({ page }) => {
-  const settings = new Settings(page);
+  async launchHome() {
+    await this.page.goto("https://hercules.works/ai", {
+      waitUntil: "domcontentloaded",
+    });
+  }
 
-  await settings.openGeneralSettings();
-  await settings.verifyGeneralSettings();
-});
-  
-//rajesh
-test("Verify Account settings page", async ({ page }) => {
-  const settings = new Settings(page);
+  async openProfileMenu() {
+    await expect(this.setting_profile).toBeVisible();
+    await this.setting_profile.click();
+    await expect(this.profile_popup).toBeVisible();
+  }
 
-  await settings.openAccountSettings();
-  await settings.verifyAccountSettings();
-});
+  async verifyProfilePopup() {
+    await expect(this.profile_popup).toBeVisible();
+  }
 
-test("Verify Billing settings page", async ({ page }) => {
-  const settings = new Settings(page);
+  async verifyProfileCredits() {
+    await expect(this.profile_credits).toBeVisible();
+  }
 
-  await settings.openBillingSettings();
-  await settings.verifyBillingSettings();
-});
+  async openFreeCredits() {
+    await this.get_free_credits.click();
+    await expect(this.get_free_credits_popup).toBeVisible();
+  }
 
-test("Verify Help page", async ({ page }) => {
-  const settings = new Settings(page);
+  async closeFreeCreditsPopup() {
+    await expect(this.get_free_credits_popup_close).toBeVisible();
+    await this.get_free_credits_popup_close.click();
+  }
 
-  await settings.openHelp();
-  await settings.verifyHelpPage();
-});
+async openSettings() {
+  await this.settings_button.click();
+  // await this.page.waitForURL(/\/settings/);
+}
 
-test("Verify Dashboard page", async ({ page }) => {
-  const settings = new Settings(page);
+  async openGeneralSettings() {
+    await this.page.goto("https://hercules.works/settings?page=general");
+  }
 
-  await settings.openDashboard();
-  await settings.verifyDashboardPage();
-});
+  async openAccountSettings() {
+    await this.page.goto("https://hercules.works/settings?page=account");
+  }
 
-test("Verify Logout popup opens", async ({ page }) => {
-  const settings = new Settings(page);
+  async openBillingSettings() {
+    await this.page.goto("https://hercules.works/settings?page=billing");
+  }
 
-  await settings.openProfileMenu();
-  await settings.clickLogout();
-  await settings.verifyLogoutPopup();
-});
+  async verifyGeneralSettings() {
+    await expect(this.page).toHaveURL("https://hercules.works/settings?page=general");
+    await expect(this.settings_general).toBeVisible();
+    await expect(this.settings_general_screen_view).toBeVisible();
+  }
 
-test("Verify Logout popup cancel button", async ({ page }) => {
-  const settings = new Settings(page);
+  async verifyAccountSettings() {
+    await expect(this.page).toHaveURL("https://hercules.works/settings?page=account");
+    await expect(this.settings_account).toBeVisible();
+  }
 
-  await settings.openProfileMenu();
-  await settings.clickLogout();
-  await settings.cancelLogout();
-  await expect(settings.logout_popup).toBeHidden();
-});
+  async verifyBillingSettings() {
+    await expect(this.page).toHaveURL("https://hercules.works/settings?page=billing");
+    await expect(this.settings_billing).toBeVisible();
+    await expect(this.settings_billing_screen_view_transactions).toBeVisible();
+  }
+
+  async openHelp() {
+    await this.page.goto("https://hercules.works/help");
+  }
+
+  async verifyHelpPage() {
+    await expect(this.page).toHaveURL("https://hercules.works/help");
+    await expect(this.help_fullscreen).toBeVisible();
+  }
+
+  async openDashboard() {
+    await this.page.goto("https://hercules.works/dashboard");
+  }
+
+  async verifyDashboardPage() {
+    await expect(this.page).toHaveURL("https://hercules.works/dashboard");
+  }
+
+  async clickLogout() {
+    await this.logout_button.click();
+    await expect(this.logout_popup).toBeVisible();
+  }
+
+  async verifyLogoutPopup() {
+    await expect(this.logout_popup).toBeVisible();
+    await expect(this.logout_cancel).toBeVisible();
+    await expect(this.logout_confirm).toBeVisible();
+  }
+
+  async cancelLogout() {
+    await this.logout_cancel.click();
+  }
+
+  async confirmLogout() {
+    await this.logout_confirm.click();
+  }
+}

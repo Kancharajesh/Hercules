@@ -64,7 +64,7 @@ test("Verify Survey templates section", async ({ page }) => {
   await homeai.verifySurveyViewAll();
 });
 
-// ✅ TC01
+// TC01
 test("TC01 - Click Survey Templates View All", async ({ page }) => {
   const homeai = new Homeai(page);
 
@@ -75,7 +75,7 @@ test("TC01 - Click Survey Templates View All", async ({ page }) => {
   await homeai.verifySavedTemplatesButton();
 });
 
-// ✅ TC02
+// TC02
 test("TC02 - View All → Research → Saved", async ({ page }) => {
   const homeai = new Homeai(page);
 
@@ -90,7 +90,7 @@ test("TC02 - View All → Research → Saved", async ({ page }) => {
   await expect(homeai.Saved_tempates_button).toBeVisible();
 });
 
-// ✅ TC03
+// TC03
 test("TC03 - View All → Research Templates list", async ({ page }) => {
   const homeai = new Homeai(page);
 
@@ -104,8 +104,8 @@ test("TC03 - View All → Research Templates list", async ({ page }) => {
   await expect(homeai.SurveyResearch_AllTemplates).toBeVisible({ timeout: 15000 });
 });
 
-// ✅ AI Test 1
-test.only("Verify AI prompt submission", async ({ page }) => {
+// AI Test 1
+test("Verify AI prompt submission", async ({ page }) => {
   const homeai = new Homeai(page);
 
   const prompt = generatePrompt();
@@ -118,8 +118,8 @@ test.only("Verify AI prompt submission", async ({ page }) => {
 
 
 
-// ✅ AI Test 2 (Print response)
-test.only("Verify AI prompt and print response", async ({ page }) => {
+// AI Test 2 (Print response)
+test("Verify AI prompt and print response", async ({ page }) => {
   const homeai = new Homeai(page);
 
   const prompt = generatePrompt();
