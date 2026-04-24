@@ -113,7 +113,7 @@ export class Homeai {
     await this.verifyVisibleAndClickable(this.Saved_tempates_button);
   }
 
-  // ✅ Optional click methods
+  // Optional click methods
   async clickProfileIcon() {
     await this.verifyProfileIcon();
     await this.profile_icon.click();

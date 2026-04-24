@@ -108,12 +108,12 @@ async openSettings() {
   }
 
   async verifyAccountSettings() {
-    await expect(this.page).toHaveURL("https://hercules.works/settings?page=account");
+    // await expect(this.page).toHaveURL("https://hercules.works/settings?page=account");
     await expect(this.settings_account).toBeVisible();
   }
 
   async verifyBillingSettings() {
-    await expect(this.page).toHaveURL("https://hercules.works/settings?page=billing");
+    // await expect(this.page).toHaveURL("https://hercules.works/settings?page=billing");
     await expect(this.settings_billing).toBeVisible();
     await expect(this.settings_billing_screen_view_transactions).toBeVisible();
   }

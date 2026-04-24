@@ -1,6 +1,8 @@
 import { test, expect } from "@playwright/test";
 import { Login_model } from "../pages/Login_model.js";
 import { Homeai } from "../pages/Homeai.js";
+import { Settings } from "../pages/settings.js";
+import { settings } from "node:cluster";
 
 const topics = [
   "Create a detailed survey for customer experience improvement",
@@ -45,7 +47,7 @@ test("Verify Top bar is visible", async ({ page }) => {
 
 test("Verify Profile icon is visible", async ({ page }) => {
   const homeai = new Homeai(page);
-  await homeai.verifyProfileIcon();
+  await settings.openProfileMenu();
 });
 
 test("Verify Notification icon is visible", async ({ page }) => {

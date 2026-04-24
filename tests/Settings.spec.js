@@ -56,8 +56,7 @@ test.skip("Verify Account settings page", async ({ page }) => {
 
   await settings.openProfileMenu();
   await settings.openSettings();
-  await
-  await settings.openAccountSettings();
+    await settings.openAccountSettings();
   await settings.verifyAccountSettings();
 });
 
