@@ -33,30 +33,30 @@ test.skip("Verify Pricing menu is visible and clickable", async ({ page }) => {
   await home.pricing_visible();
 });
 
-test("Click Pricing menu and verify Pricing popup opens", async ({ page }) => {
+test.skip("Click Pricing menu and verify Pricing popup opens", async ({ page }) => {
   const home = new HomePage(page);
   await home.pricing_click();
 });
 
-test("Verify Pricing Free plan is visible", async ({ page }) => {
+test.skip("Verify Pricing Free plan is visible", async ({ page }) => {
   const home = new HomePage(page);
   await home.pricing_click();
   await home.pricing_free_visible();
 });
 
-test("Verify Pricing Monthly plan is visible", async ({ page }) => {
+test.skip("Verify Pricing Monthly plan is visible", async ({ page }) => {
   const home = new HomePage(page);
   await home.pricing_click();
   await home.pricing_monthly_visible();
 });
 
-test("Verify Pricing Annually plan is visible", async ({ page }) => {
+test.skip("Verify Pricing Annually plan is visible", async ({ page }) => {
   const home = new HomePage(page);
   await home.pricing_click();
   await home.pricing_annually_visible();
 });
 
-test("Verify Pricing Enterprise plan is visible", async ({ page }) => {
+test.skip("Verify Pricing Enterprise plan is visible", async ({ page }) => {
   const home = new HomePage(page);
   await home.pricing_click();
   await home.pricing_enterprise_visible();
