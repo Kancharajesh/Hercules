@@ -2,24 +2,22 @@ import { test, expect } from "@playwright/test";
 import { Login_model } from "../pages/Login_model.js";
 import { Homeai } from "../pages/Homeai.js";
 import { Settings } from "../pages/settings.js";
-import { settings } from "node:cluster";
 
 const topics = [
-  "Create a detailed survey for customer experience improvement",
-  "Make a short survey for AI product feedback",
-  "Create a professional survey for employee satisfaction",
-  "Make a user-friendly survey for e-commerce checkout experience",
-  "Create a feedback survey for mobile app usability",
-  "Make a survey to evaluate restaurant dining experience",
-  "Create a post-event survey for attendee feedback",
-  "Make a survey for SaaS onboarding experience",
-  "Create a survey to measure website performance",
-  "Make a survey for customer support quality",
-  "Create a UX survey for interface improvements",
-  "Make a marketing feedback survey for campaigns"
+  "customer experience improvement",
+  "AI product feedback",
+  "employee satisfaction",
+  "e-commerce checkout experience",
+  "mobile app usability",
+  "restaurant dining experience",
+  "event feedback",
+  "SaaS onboarding",
+  "website performance",
+  "customer support quality",
+  "UI/UX improvements",
+  "marketing campaign feedback",
 ];
 
-// 🔹 Helper to generate dynamic prompt
 function generatePrompt() {
   const randomTopic = topics[Math.floor(Math.random() * topics.length)];
   return `Create a survey for ${randomTopic} - ${Date.now()}`;
@@ -35,6 +33,8 @@ test.beforeEach(async ({ page }) => {
   await page.waitForLoadState("domcontentloaded");
 });
 
+// ---------------- BASIC UI TESTS ----------------
+
 test("Verify Homepage container is visible", async ({ page }) => {
   const homeai = new Homeai(page);
   await homeai.verifyHomepage();
@@ -45,9 +45,11 @@ test("Verify Top bar is visible", async ({ page }) => {
   await homeai.verifyTopBar();
 });
 
-test("Verify Profile icon is visible", async ({ page }) => {
-  const homeai = new Homeai(page);
+test("Verify Profile menu opens", async ({ page }) => {
+  const settings = new Settings(page);
+
   await settings.openProfileMenu();
+  await settings.verifyProfilePopup();
 });
 
 test("Verify Notification icon is visible", async ({ page }) => {
@@ -66,47 +68,40 @@ test("Verify Survey templates section", async ({ page }) => {
   await homeai.verifySurveyViewAll();
 });
 
-// TC01
+// ---------------- SURVEY FLOW ----------------
+
 test("TC01 - Click Survey Templates View All", async ({ page }) => {
   const homeai = new Homeai(page);
 
-  await homeai.verifySurveyTemplatesViewAll();
-  await homeai.SurveyTemplates_viewAll.click();
+  await homeai.clickSurveyTemplatesViewAll();
 
   await homeai.verifyResearchTemplatesButton();
   await homeai.verifySavedTemplatesButton();
 });
 
-// TC02
-test("TC02 - View All → Research → Saved", async ({ page }) => {
+test("TC02 - View All Research Saved", async ({ page }) => {
   const homeai = new Homeai(page);
 
-  await homeai.verifySurveyTemplatesViewAll();
-  await homeai.SurveyTemplates_viewAll.click();
-
+  await homeai.clickSurveyTemplatesViewAll();
   await homeai.verifyResearchTemplatesButton();
 
-  await homeai.verifySavedTemplatesButton();
-  await homeai.Saved_tempates_button.click();
+  await homeai.clickSavedTemplatesButton();
 
   await expect(homeai.Saved_tempates_button).toBeVisible();
 });
 
-// TC03
-test("TC03 - View All → Research Templates list", async ({ page }) => {
+test("TC03 - View All Research Templates list", async ({ page }) => {
   const homeai = new Homeai(page);
 
-  await homeai.verifySurveyTemplatesViewAll();
-  await homeai.SurveyTemplates_viewAll.click();
+  await homeai.clickSurveyTemplatesViewAll();
+  await homeai.clickResearchTemplatesButton();
 
-  await homeai.verifyResearchTemplatesButton();
-  await homeai.Reseach_Tempates_button.click();
-
-  await expect(homeai.SurveyResearch_Templates).toBeVisible({ timeout: 15000 });
-  await expect(homeai.SurveyResearch_AllTemplates).toBeVisible({ timeout: 15000 });
+  await homeai.verifySurveyResearchTemplates();
+  await homeai.verifySurveyResearchAllTemplates();
 });
 
-// AI Test 1
+// ---------------- AI TESTS ----------------
+
 test("Verify AI prompt submission", async ({ page }) => {
   const homeai = new Homeai(page);
 
@@ -118,9 +113,6 @@ test("Verify AI prompt submission", async ({ page }) => {
   await homeai.verifyChatSuggestion();
 });
 
-
-
-// AI Test 2 (Print response)
 test("Verify AI prompt and print response", async ({ page }) => {
   const homeai = new Homeai(page);
 
@@ -130,4 +122,21 @@ test("Verify AI prompt and print response", async ({ page }) => {
   await homeai.submitPrompt();
 
   await homeai.verifyAndPrintAiSuggestion();
+});
+
+// ---------------- CAMPAIGN / RESEARCH BRIEF FULL FLOW ----------------
+
+test.skip("Verify Research Brief generation full flow", async ({ page }) => {
+  const homeai = new Homeai(page);
+
+  const prompt = generatePrompt();
+
+  await homeai.enterCampaignPrompt(prompt);
+  await homeai.submitCampaignPrompt();
+
+  await homeai.verifyAndPrintAiSuggestion();
+  await homeai.selectAiResponseAndProceed();
+  await homeai.submitFinalSurvey();
+
+  await homeai.verifyCampaignResearchBrief();
 });

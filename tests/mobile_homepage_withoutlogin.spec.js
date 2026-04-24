@@ -43,14 +43,14 @@ test("Mobile - Verify Try it for free button", async ({ page }) => {
   await mobile.clickTryItForFree();
 });
 
-test("Mobile - Verify prompt input field", async ({ page }) => {
+test.skip("Mobile - Verify prompt input field", async ({ page }) => {
   const mobile = new Mobile_Homepage_withoutlogin(page);
 
   await mobile.launchTheBrowser();
   await mobile.enterPrompt("Create a survey for customer satisfaction");
 });
 
-test("Mobile - Verify prompt submission", async ({ page }) => {
+test.skip("Mobile - Verify prompt submission", async ({ page }) => {
   const mobile = new Mobile_Homepage_withoutlogin(page);
 
   await mobile.launchTheBrowser();

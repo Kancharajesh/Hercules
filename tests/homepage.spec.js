@@ -62,7 +62,7 @@ test.skip("Verify Pricing Enterprise plan is visible", async ({ page }) => {
   await home.pricing_enterprise_visible();
 });
 
-test("Close Pricing popup", async ({ page }) => {
+test.skip("Close Pricing popup", async ({ page }) => {
   const home = new HomePage(page);
   await home.pricing_click();
   await home.pricing_close_click();

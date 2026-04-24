@@ -4,7 +4,7 @@ module.exports = defineConfig({
   testDir: "./tests",
   reporter: "html",
   timeout: 30000,
-  workers: 1, // 👈 runs tests sequentially
+  workers: 2, // 👈 runs tests sequentially
 
   expect: {
     timeout: 15000,
@@ -14,7 +14,9 @@ module.exports = defineConfig({
     trace: "on-first-retry",
     screenshot: "only-on-failure",
     video: "retain-on-failure",
+    headless: false
   },
+  
 
   projects: [
     {
