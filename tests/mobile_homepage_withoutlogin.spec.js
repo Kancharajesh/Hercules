@@ -82,4 +82,4 @@ test("Mobile - Verify write prompt button visible", async ({ page }) => {
   await mobile.launchTheBrowser();
 
   await expect(mobile.mobile_chat_write_prompt_button).toBeVisible();
-});
+});  
