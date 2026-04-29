@@ -19,15 +19,11 @@ module.exports = defineConfig({
   
 
   projects: [
-    {
-      name: "chromium",
-      use: {
-        ...devices["Desktop Chrome"],
-      },
-      testIgnore: [
-        "**/mobile_*.spec.js",
-      ],
-    },
+  {
+    name: "chromium",
+    use: { ...devices["Desktop Chrome"] },
+    testIgnore: ["**/mobile_*.spec.js"],
+  },
     {
       name: "Mobile Chrome",
       use: {
