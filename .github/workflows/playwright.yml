@@ -9,7 +9,7 @@ on:
   pull_request:
     branches: [main, master]
   schedule:
-    - cron: "0 */4 * * *" # Runs every 4 hours
+    - cron: "0 */8 * * *" # Runs every 4 hours
 
 jobs:
   test:

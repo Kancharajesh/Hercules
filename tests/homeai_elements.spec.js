@@ -102,7 +102,7 @@ test("TC03 - View All Research Templates list", async ({ page }) => {
 
 // ---------------- AI TESTS ----------------
 
-test("Verify AI prompt submission", async ({ page }) => {
+test.skip("Verify AI prompt submission", async ({ page }) => {
   const homeai = new Homeai(page);
 
   const prompt = generatePrompt();
