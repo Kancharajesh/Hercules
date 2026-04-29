@@ -3,12 +3,11 @@ const { defineConfig, devices } = require("@playwright/test");
 module.exports = defineConfig({
   testDir: "./tests",
 
-  reporter: [["html", { open: "never" }], ["list"]],
+  // ❌ removed html reporter
+  reporter: "list",
 
   timeout: 60000,
-
   workers: process.env.CI ? 1 : 1,
-
   retries: process.env.CI ? 1 : 0,
 
   expect: {
@@ -16,9 +15,9 @@ module.exports = defineConfig({
   },
 
   use: {
-    trace: "retain-on-failure",
-    screenshot: "only-on-failure",
-    video: "retain-on-failure",
+    trace: "off",              // disable trace files
+    screenshot: "off",         // disable screenshots
+    video: "off",              // disable videos
     headless: true,
     actionTimeout: 30000,
     navigationTimeout: 60000,
@@ -27,17 +26,12 @@ module.exports = defineConfig({
   projects: [
     {
       name: "chromium",
-      use: {
-        ...devices["Desktop Chrome"],
-      },
+      use: { ...devices["Desktop Chrome"] },
       testIgnore: ["**/mobile_*.spec.js"],
     },
-
     {
       name: "Mobile Chrome",
-      use: {
-        ...devices["Pixel 5"],
-      },
+      use: { ...devices["Pixel 5"] },
       testMatch: ["**/mobile_*.spec.js"],
     },
   ],
