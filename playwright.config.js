@@ -3,8 +3,7 @@ const { defineConfig, devices } = require("@playwright/test");
 module.exports = defineConfig({
   testDir: "./tests",
 
-  // ❌ removed html reporter
-  reporter: "list",
+  reporter: process.env.CI ? "list" : "html",
 
   timeout: 60000,
   workers: process.env.CI ? 1 : 1,
@@ -15,10 +14,10 @@ module.exports = defineConfig({
   },
 
   use: {
-    trace: "off",              // disable trace files
-    screenshot: "off",         // disable screenshots
-    video: "off",              // disable videos
     headless: true,
+    trace: process.env.CI ? "retain-on-failure" : "on-first-retry",
+    screenshot: "only-on-failure",
+    video: process.env.CI ? "retain-on-failure" : "off",
     actionTimeout: 30000,
     navigationTimeout: 60000,
   },
