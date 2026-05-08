@@ -3,11 +3,11 @@ const { defineConfig, devices } = require("@playwright/test");
 module.exports = defineConfig({
   testDir: "./tests",
 
-  // No HTML report
-  reporter: "list",
+  // Local = HTML report, Git/CI = terminal only
+  reporter: process.env.CI ? "line" : "html",
 
   timeout: 60000,
-  workers: 1,
+  workers: 2,
   retries: process.env.CI ? 1 : 0,
 
   expect: {
@@ -17,7 +17,6 @@ module.exports = defineConfig({
   use: {
     headless: true,
 
-    // Disable report artifacts
     trace: "off",
     screenshot: "off",
     video: "off",

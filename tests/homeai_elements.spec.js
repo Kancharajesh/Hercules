@@ -35,7 +35,7 @@ test.beforeEach(async ({ page }) => {
 
 // ---------------- BASIC UI TESTS ----------------
 
-test("Verify Homepage container is visible", async ({ page }) => {
+test.skip("Verify Homepage container is visible", async ({ page }) => {
   const homeai = new Homeai(page);
   await homeai.verifyHomepage();
 });

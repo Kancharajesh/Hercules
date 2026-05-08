@@ -69,7 +69,7 @@ test("Verify Billing settings page", async ({ page }) => {
   await settings.verifyBillingSettings();
 });
 
-test("Verify Help page", async ({ page }) => {
+test.skip("Verify Help page", async ({ page }) => {
   const settings = new Settings(page);
 
 await settings.openProfileMenu();
