@@ -4,7 +4,6 @@ on:
   push:
   pull_request:
   workflow_dispatch:
-
   schedule:
     - cron: "0 */6 * * *"
 
@@ -20,12 +19,53 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
       - name: Run Playwright tests
+        id: playwright
+        continue-on-error: true
         run: npx playwright test --project=chromium
+
+      - name: Create email summary
+        if: always()
+        run: node scripts/create-test-summary.js
+
+      - name: Upload Playwright HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-html-report
+          path: playwright-report/
+          retention-days: 14
+
+      - name: Upload Playwright test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-test-results
+          path: test-results/
+          retention-days: 14
+
+      - name: Email failed test report
+        if: always()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: ${{ secrets.SMTP_SERVER }}
+          server_port: ${{ secrets.SMTP_PORT }}
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: "Playwright CI ${{ steps.playwright.outcome }} - ${{ github.repository }}"
+          to: rajesh@jupitermeta.io
+          from: GitHub Actions <${{ secrets.SMTP_USERNAME }}>
+          body: file://test-results/email-summary.txt
+          attachments: test-results/results.xml,test-results/results.json
+
+      - name: Fail job when tests fail
+        if: steps.playwright.outcome == 'failure'
+        run: exit 1

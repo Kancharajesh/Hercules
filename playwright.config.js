@@ -3,11 +3,25 @@ const { defineConfig, devices } = require("@playwright/test");
 module.exports = defineConfig({
   testDir: "./tests",
 
+<<<<<<< HEAD
   // Local = HTML report, Git/CI = terminal only
   reporter: process.env.CI ? "line" : "html",
 
   timeout: 60000,
   workers: 2,
+=======
+  reporter: process.env.CI
+    ? [
+        ["list"],
+        ["html", { outputFolder: "playwright-report", open: "never" }],
+        ["junit", { outputFile: "test-results/results.xml" }],
+        ["json", { outputFile: "test-results/results.json" }],
+      ]
+    : [["html", { outputFolder: "playwright-report", open: "never" }]],
+
+  timeout: 60000,
+  workers: process.env.CI ? 1 : 1,
+>>>>>>> cd8621a (email)
   retries: process.env.CI ? 1 : 0,
 
   expect: {
@@ -16,11 +30,17 @@ module.exports = defineConfig({
 
   use: {
     headless: true,
+<<<<<<< HEAD
 
     trace: "off",
     screenshot: "off",
     video: "off",
 
+=======
+    trace: process.env.CI ? "retain-on-failure" : "off",
+    screenshot: "only-on-failure",
+    video: process.env.CI ? "retain-on-failure" : "off",
+>>>>>>> cd8621a (email)
     actionTimeout: 30000,
     navigationTimeout: 60000,
   },
