@@ -29,20 +29,20 @@ jobs:
       - name: Run Playwright Tests
         run: npx playwright test --project=chromium
 
-      - name: Send Email Notification
-        if: success()
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{ secrets.MAIL_USERNAME }}
-          password: ${{ secrets.MAIL_PASSWORD }}
-          subject: Playwright Tests Passed
-          to: rajesh@jupitermeta.io
-          from: GitHub Actions
-          body: |
-            Playwright tests completed successfully.
+      # # - name: Send Email Notification
+      #   if: success()
+      #   uses: dawidd6/action-send-mail@v3
+      #   with:
+      #     server_address: smtp.gmail.com
+      #     server_port: 465
+      #     username: ${{ secrets.MAIL_USERNAME }}
+      #     password: ${{ secrets.MAIL_PASSWORD }}
+      #     subject: Playwright Tests Passed
+      #     to: rajesh@jupitermeta.io
+      #     from: GitHub Actions
+      #     body: |
+      #       Playwright tests completed successfully.
 
-            Repository: ${{ github.repository }}
-            Branch: ${{ github.ref_name }}
-          secure: true.  
+      #       Repository: ${{ github.repository }}
+      #       Branch: ${{ github.ref_name }}
+      #     secure: true.  
