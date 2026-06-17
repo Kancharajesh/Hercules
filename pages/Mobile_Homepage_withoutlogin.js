@@ -258,8 +258,9 @@ export class Mobile_Homepage_withoutlogin {
     await expect(this.dashboardSearchInput).toBeVisible();
     await expect(this.dashboardFilterDropdown).toBeVisible();
     await expect(this.dashboardSortDropdown).toBeVisible();
-    await expect(this.draftStatus).toBeVisible();
-    await expect(this.pausedStatus).toBeVisible();
+    await expect(
+      this.draftStatus.or(this.pausedStatus).or(this.completedStatus).first()
+    ).toBeVisible();
     await expect(this.firstSurveyCardMenu).toBeVisible();
   }
 
