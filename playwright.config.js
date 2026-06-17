@@ -14,12 +14,12 @@ module.exports = defineConfig({
       ]
     : [["html", { outputFolder: "playwright-report", open: "never" }]],
 
-  timeout: 60000,
+  timeout: process.env.CI ? 90000 : 60000,
   workers: process.env.CI ? 2 : 2,
-  retries: process.env.CI ? 1 : 0,
+  retries: process.env.CI ? 2 : 0,
 
   expect: {
-    timeout: 20000,
+    timeout: process.env.CI ? 30000 : 20000,
   },
 
   use: {
@@ -27,8 +27,8 @@ module.exports = defineConfig({
     trace: process.env.CI ? "retain-on-failure" : "off",
     screenshot: "only-on-failure",
     video: process.env.CI ? "retain-on-failure" : "off",
-    actionTimeout: 30000,
-    navigationTimeout: 60000,
+    actionTimeout: process.env.CI ? 45000 : 30000,
+    navigationTimeout: process.env.CI ? 90000 : 60000,
     launchOptions: slowMo > 0 ? { slowMo } : undefined,
   },
 

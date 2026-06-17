@@ -1,87 +1,111 @@
-// import { test, expect } from "@playwright/test";
-// import { Mobile_Homepage_withoutlogin } from "../pages/Mobile_Homepage_withoutlogin.js";
+import { test } from "@playwright/test";
+import { Mobile_Homepage_withoutlogin } from "../pages/Mobile_Homepage_withoutlogin.js";
 
-// test("Mobile - Verify homepage is visible", async ({ page }) => {
-//   const mobile = new Mobile_Homepage_withoutlogin(page);
+test.describe("Mobile web public and authenticated flows", () => {
+  test("TC01 - Mobile public homepage shows hero and auth buttons", async ({
+    page,
+  }) => {
+    const mobile = new Mobile_Homepage_withoutlogin(page);
 
-//   await mobile.launchTheBrowser();
-//   await mobile.verifyMobileHomePage();
-// });
+    await mobile.launchTheBrowser();
+    await mobile.verifyMobileHomePage();
+    await mobile.verifyLoginButton();
+    await mobile.verifySignupButton();
+  });
 
-// test("Mobile - Verify login button is visible", async ({ page }) => {
-//   const mobile = new Mobile_Homepage_withoutlogin(page);
+  test("TC02 - Mobile Try it for free exposes public prompt builder", async ({
+    page,
+  }) => {
+    const mobile = new Mobile_Homepage_withoutlogin(page);
 
-//   await mobile.launchTheBrowser();
-//   await mobile.verifyLoginButton();
-// });
+    await mobile.launchTheBrowser();
+    await mobile.verifyPublicPromptBuilder();
+  });
 
-// test("Mobile - Verify signup button is visible", async ({ page }) => {
-//   const mobile = new Mobile_Homepage_withoutlogin(page);
+  test("TC03 - Mobile login page opens with expected fields", async ({
+    page,
+  }) => {
+    const mobile = new Mobile_Homepage_withoutlogin(page);
 
-//   await mobile.launchTheBrowser();
-//   await mobile.verifySignupButton();
-// });
+    await mobile.launchTheBrowser();
+    await mobile.clickLogin();
+    await mobile.verifyLoginPageFields();
+  });
 
-// test("Mobile - Click login and verify login page", async ({ page }) => {
-//   const mobile = new Mobile_Homepage_withoutlogin(page);
+  test("TC04 - Mobile signup page opens with expected fields", async ({
+    page,
+  }) => {
+    const mobile = new Mobile_Homepage_withoutlogin(page);
 
-//   await mobile.launchTheBrowser();
-//   await mobile.clickLogin();
-// });
+    await mobile.launchTheBrowser();
+    await mobile.clickSignup();
+    await mobile.verifySignupPageFields();
+  });
 
-// test("Mobile - Click signup and verify signup page", async ({ page }) => {
-//   const mobile = new Mobile_Homepage_withoutlogin(page);
+  test.describe("after login", () => {
+    test.beforeEach(async ({ page }) => {
+      const mobile = new Mobile_Homepage_withoutlogin(page);
 
-//   await mobile.launchTheBrowser();
-//   await mobile.clickSignup();
-// });
+      await mobile.launchTheBrowser();
+      await mobile.mobileLogin();
+    });
 
-// test("Mobile - Verify Try it for free button", async ({ page }) => {
-//   const mobile = new Mobile_Homepage_withoutlogin(page);
+    test("TC05 - Mobile authenticated home and prompt controls are visible", async ({
+      page,
+    }) => {
+      const mobile = new Mobile_Homepage_withoutlogin(page);
 
-//   await mobile.launchTheBrowser();
-//   await mobile.clickTryItForFree();
-// });
+      await mobile.verifyAfterLoginHome();
+      await mobile.verifyAuthenticatedPromptControls();
+    });
 
-// test.skip("Mobile - Verify prompt input field", async ({ page }) => {
-//   const mobile = new Mobile_Homepage_withoutlogin(page);
+    test("TC06 - Mobile dashboard survey cards and search work", async ({
+      page,
+    }) => {
+      const mobile = new Mobile_Homepage_withoutlogin(page);
 
-//   await mobile.launchTheBrowser();
-//   await mobile.enterPrompt("Create a survey for customer satisfaction");
-// });
+      await mobile.verifyMobileDashboardSurveyCards();
+      await mobile.verifyMobileDashboardSearch();
+    });
 
-// test.skip("Mobile - Verify prompt submission", async ({ page }) => {
-//   const mobile = new Mobile_Homepage_withoutlogin(page);
+    test("TC07 - Mobile dashboard survey card menu opens", async ({
+      page,
+    }) => {
+      const mobile = new Mobile_Homepage_withoutlogin(page);
 
-//   await mobile.launchTheBrowser();
+      await mobile.verifyMobileSurveyCardMenu();
+    });
 
-//   const prompt = `Create a survey ${Date.now()}`;
+    test("TC08 - Mobile Survey Resources cards and filters are visible", async ({
+      page,
+    }) => {
+      const mobile = new Mobile_Homepage_withoutlogin(page);
 
-//   await mobile.enterPrompt(prompt);
-//   await mobile.clickSend();
-// });
+      await mobile.verifyMobileSurveyResources();
+    });
 
-// test("Mobile - Login and verify top bar", async ({ page }) => {
-//   const mobile = new Mobile_Homepage_withoutlogin(page);
+    test("TC09 - Mobile Research Templates filters switch template cards", async ({
+      page,
+    }) => {
+      const mobile = new Mobile_Homepage_withoutlogin(page);
 
-//   await mobile.launchTheBrowser();
+      await mobile.verifyMobileResearchTemplatesFunctionality();
+    });
 
-//   await mobile.clickLogin();
+    test("TC10 - Mobile Saved Audiences card opens saved audience area", async ({
+      page,
+    }) => {
+      const mobile = new Mobile_Homepage_withoutlogin(page);
 
-//   await mobile.mobileLogin(
-//     "rajesh@jupitermeta.io",
-//     "12345678"
-//   );
+      await mobile.verifyMobileSavedAudiencesFunctionality();
+    });
 
+    test("TC11 - Mobile profile menu shows account actions", async ({
+      page,
+    }) => {
+      const mobile = new Mobile_Homepage_withoutlogin(page);
 
-
-//   await mobile.verifyAfterLoginTopBar();
-// });
-
-// test("Mobile - Verify write prompt button visible", async ({ page }) => {
-//   const mobile = new Mobile_Homepage_withoutlogin(page);
-
-//   await mobile.launchTheBrowser();
-
-//   await expect(mobile.mobile_chat_write_prompt_button).toBeVisible();
-// });  
+      await mobile.verifyMobileProfileMenu();
+    });
+  });
+});

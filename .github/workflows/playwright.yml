@@ -11,6 +11,13 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    env:
+      # Set your test credentials and URL here
+      TARGET_URL: ${{ secrets.TARGET_URL || 'https://hercules.works/ai' }}
+      AUTH_EMAIL: ${{ secrets.AUTH_EMAIL || 'rajesh@jupitermeta.io' }}
+      AUTH_PASSWORD: ${{ secrets.AUTH_PASSWORD || '12345678' }}
+      CI: true
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -28,6 +35,10 @@ jobs:
 
       - name: Run Playwright Tests
         run: npx playwright test --project=chromium
+        env:
+          TARGET_URL: ${{ env.TARGET_URL }}
+          AUTH_EMAIL: ${{ env.AUTH_EMAIL }}
+          AUTH_PASSWORD: ${{ env.AUTH_PASSWORD }}
 
       # # - name: Send Email Notification
       #   if: success()
