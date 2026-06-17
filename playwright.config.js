@@ -1,5 +1,7 @@
 const { defineConfig, devices } = require("@playwright/test");
 
+const slowMo = Number(process.env.SLOW_MO || 0);
+
 module.exports = defineConfig({
   testDir: "./tests",
 
@@ -27,6 +29,7 @@ module.exports = defineConfig({
     video: process.env.CI ? "retain-on-failure" : "off",
     actionTimeout: 30000,
     navigationTimeout: 60000,
+    launchOptions: slowMo > 0 ? { slowMo } : undefined,
   },
 
   projects: [

@@ -7,7 +7,9 @@
   "test": "npx playwright test",
   "test:chromium": "npx playwright test --project=chromium",
   "test:mobile": "npx playwright test --project=\"Mobile Chrome\"",
-  "test:headed": "npx playwright test --headed"
+  "test:headed": "npx playwright test --headed",
+  "test:auth": "npx playwright test tests/login.spec.js --project=chromium --workers=1",
+  "test:auth:slow": "SLOW_MO=450 STEP_DELAY_MS=900 npx playwright test tests/login.spec.js --project=chromium --workers=1 --headed"
   },
   "keywords": [],
   "author": "",
