@@ -61,4 +61,6 @@ export class Signup_model {
     await expect(this.loginSwitch).toBeEnabled();
     await this.loginSwitch.click();
   }
+
+  
 }
