@@ -16,12 +16,13 @@ module.exports = defineConfig({
 
   timeout: process.env.CI ? 90000 : 60000,
   workers: process.env.CI ? 2 : 2,
-  retries: process.env.CI ? 2 : 0,
+  retries: process.env.CI ? 1 : 0,
 
   expect: {
     timeout: process.env.CI ? 30000 : 20000,
+    // headless:false
   },
-
+  
   use: {
     headless: true,
     trace: process.env.CI ? "retain-on-failure" : "off",
