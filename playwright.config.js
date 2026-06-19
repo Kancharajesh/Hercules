@@ -20,7 +20,6 @@ module.exports = defineConfig({
 
   expect: {
     timeout: process.env.CI ? 30000 : 20000,
-    // headless:false
   },
   
   use: {
