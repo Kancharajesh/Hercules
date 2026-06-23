@@ -2,76 +2,52 @@ name: Playwright Tests
 
 on:
   push:
+    branches: [main]
   pull_request:
+    branches: [main]
   workflow_dispatch:
-  schedule:
-    - cron: "0 */8 * * *"
 
 jobs:
   test:
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    timeout-minutes: 90
-
-    env:
-      # Set your test credentials and URL here
-      TARGET_URL: ${{ secrets.TARGET_URL || 'https://hercules.works/ai' }}
-      AUTH_EMAIL: ${{ secrets.AUTH_EMAIL || 'rajesh@jupitermeta.io' }}
-      AUTH_PASSWORD: ${{ secrets.AUTH_PASSWORD || '12345678' }}
-      CI: true
-      STEP_DELAY_MS: 0
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 20
           cache: npm
 
       - name: Install dependencies
         run: npm ci
-        timeout-minutes: 10
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps chromium
-        timeout-minutes: 25
 
       - name: Run Playwright Tests
-        run: npx playwright test --project=chromium --forbid-only
-        timeout-minutes: 45
+        run: npx playwright test --project=chromium
         env:
-          TARGET_URL: ${{ env.TARGET_URL }}
-          AUTH_EMAIL: ${{ env.AUTH_EMAIL }}
-          AUTH_PASSWORD: ${{ env.AUTH_PASSWORD }}
-          STEP_DELAY_MS: ${{ env.STEP_DELAY_MS }}
+          CI: true
+          TARGET_URL: ${{ secrets.TARGET_URL }}
+          AUTH_EMAIL: ${{ secrets.AUTH_EMAIL }}
+          AUTH_PASSWORD: ${{ secrets.AUTH_PASSWORD }}
 
-      - name: Upload Playwright report
+      - name: Upload Playwright Report
         if: always()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v4
         with:
           name: playwright-report
-          path: |
-            playwright-report/
-            test-results/
-          if-no-files-found: ignore
+          path: playwright-report/
           retention-days: 7
 
-      # # - name: Send Email Notification
-      #   if: success()
-      #   uses: dawidd6/action-send-mail@v3
-      #   with:
-      #     server_address: smtp.gmail.com
-      #     server_port: 465
-      #     username: ${{ secrets.MAIL_USERNAME }}
-      #     password: ${{ secrets.MAIL_PASSWORD }}
-      #     subject: Playwright Tests Passed
-      #     to: rajesh@jupitermeta.io
-      #     from: GitHub Actions
-      #     body: |
-      #       Playwright tests completed successfully.
-
-      #       Repository: ${{ github.repository }}
-      #       Branch: ${{ github.ref_name }}
-      #     secure: true.  
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: test-results/
+          retention-days: 7

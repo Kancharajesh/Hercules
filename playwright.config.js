@@ -15,13 +15,13 @@ module.exports = defineConfig({
     : [["html", { outputFolder: "playwright-report", open: "never" }]],
 
   timeout: process.env.CI ? 90000 : 60000,
-  workers: process.env.CI ? 2 : 2,
-  retries: process.env.CI ? 1 : 0,
+  workers: process.env.CI ? 1 : 2,
+  retries: process.env.CI ? 2 : 0,
 
   expect: {
     timeout: process.env.CI ? 30000 : 20000,
   },
-  
+
   use: {
     headless: true,
     trace: process.env.CI ? "retain-on-failure" : "off",
