@@ -23,6 +23,9 @@ function generatePrompt() {
   return `Create a survey for ${randomTopic} - ${Date.now()}`;
 }
 
+const liveAiTest =
+  process.env.CI && process.env.LIVE_AI_TESTS !== "true" ? test.skip : test;
+
 test.beforeEach(async ({ page }) => {
   const login = new Login_model(page);
 
@@ -108,7 +111,7 @@ test.skip("Verify AI prompt submission", async ({ page }) => {
   await homeai.verifyChatSuggestion();
 });
 
-test("Verify AI prompt and print response", async ({ page }) => {
+liveAiTest("Verify AI prompt and print response", async ({ page }) => {
   const homeai = new Homeai(page);
 
   const prompt = generatePrompt();
