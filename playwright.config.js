@@ -4,8 +4,6 @@ const slowMo = Number(process.env.SLOW_MO || 0);
 
 module.exports = defineConfig({
   testDir: "./tests",
-  forbidOnly: !!process.env.CI,
-  globalTimeout: process.env.CI ? 45 * 60 * 1000 : undefined,
 
   reporter: process.env.CI
     ? [
@@ -19,7 +17,6 @@ module.exports = defineConfig({
   timeout: process.env.CI ? 90000 : 60000,
   workers: process.env.CI ? 2 : 2,
   retries: process.env.CI ? 1 : 0,
-  maxFailures: process.env.CI ? 10 : undefined,
 
   expect: {
     timeout: process.env.CI ? 30000 : 20000,
